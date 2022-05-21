@@ -15,7 +15,8 @@ const profilePath = "profile"
 post request to add a contact to the contacts of a profile
 */
 export async function createProfile(username, password){
-    const randomToken = nanoid()
+    const randomToken = nanoid();
+    console.log(randomToken)
     try {
         const response = await fetch(backendURL + profilePath, {
             method:"POST",
@@ -92,7 +93,7 @@ post request to add a contact to the contacts of a profile
 */
 export async function addContactToProfile(token, contact, phoneNumber){
     try {
-        const response = await fetch(backendURL + profilePath, {
+        const response = await fetch(backendURL + profilePath + "/contact", {
             method:"POST",
             headers: {
             "Content-Type":"application/json",

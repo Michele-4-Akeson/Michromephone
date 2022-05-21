@@ -10,7 +10,7 @@ returns array of token associated with profile
 router.get("/token", async function(req, res){
     
     try{
-        console.log("GET/Profile/SignIn Called")
+        console.log("GET/Profile/token Called")
         const queryUsername = req.query.username;
         const queryPassword = req.query.password;
         
@@ -32,7 +32,7 @@ router.get("/contact", async function(req, res){
     try{
         console.log("GET/Profile/contact Called")
         const token = req.query.token;
-
+        console.log("token", token)
         
         const result = await Profile.findOne({token:token})
         res.json({contacts:result.contacts})
@@ -60,9 +60,12 @@ router.post("/", async function(req, res){
             const createResult = await Profile.create({username:username, password:password, token:token})
             console.log("New profile created\n", createResult)
             res.json({success:true});
+        } else{
+            console.log("Profile already exsists");
+            res.json({success:false});
         }
 
-        res.json({success:false});
+
         
        
     } catch (error){
