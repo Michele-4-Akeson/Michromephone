@@ -9,6 +9,7 @@ const contactSchema = new mongoose.Schema({
 const profileSchema = new mongoose.Schema({
     username: String,
     password: String,
+    token:String,
     contacts:[contactSchema]
    
 })

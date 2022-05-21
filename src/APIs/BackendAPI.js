@@ -1,3 +1,5 @@
+import {nanoid} from 'nanoid'
+
 const backendURL = "http://localhost:5000/"
 const twilioPath = "twilio"
 const profilePath = "profile"
@@ -8,12 +10,40 @@ const profilePath = "profile"
 // DATABASE-ACTIONS:
 ////////////////////////////////////////
 
+
 /*
-get request to retrieve all contacts belonging to a profile with username and password
+post request to add a contact to the contacts of a profile
 */
-export async function getContacts(username, password){
+export async function createProfile(username, password){
+    const randomToken = nanoid()
     try {
-        const response = await fetch(backendURL + profilePath + "?username=" + username + "&" + "password=" + password, {
+        const response = await fetch(backendURL + profilePath, {
+            method:"POST",
+            headers: {
+            "Content-Type":"application/json",
+            "Accept":"application/json"
+            },
+            body: JSON.stringify({token:randomToken, username:username, password:password})
+        
+        });
+        
+    return response.json();
+    
+    } catch (error){
+        console.log(error);
+    }
+
+}
+
+
+
+/*
+get request to retreive account token via username and password signIn
+*/
+
+export async function getToken(username, password){
+    try {
+        const response = await fetch(backendURL + profilePath + "/token" + "?username=" + username + "&" + "password=" + password, {
         method:"GET",
         headers: {
           "Content-Type":"application/json",
@@ -27,13 +57,40 @@ export async function getContacts(username, password){
         console.log(error);
     }
 
+
+}
+
+
+
+
+
+
+/*
+get request to retrieve all contacts belonging to a profile with username and password
+*/
+export async function getContacts(token){
+    try {
+        const response = await fetch(backendURL + profilePath + "/contact" + "?token=" + token, {
+        method:"GET",
+        headers: {
+          "Content-Type":"application/json",
+          "Accept":"application/json"
+        },
+      });
+    
+    return response.json();
+    
+    } catch (error){
+        console.log(error);
+    }
+
 }
 
 
 /*
 post request to add a contact to the contacts of a profile
 */
-export async function addContactToProfile(username, password, contact, phoneNumber){
+export async function addContactToProfile(token, contact, phoneNumber){
     try {
         const response = await fetch(backendURL + profilePath, {
             method:"POST",
@@ -41,7 +98,7 @@ export async function addContactToProfile(username, password, contact, phoneNumb
             "Content-Type":"application/json",
             "Accept":"application/json"
             },
-            body: JSON.stringify({username: username, password:password, contact:contact, phoneNumber:phoneNumber})
+            body: JSON.stringify({token:token, contact:contact, phoneNumber:phoneNumber})
         
         });
         
@@ -75,7 +132,7 @@ export async function addContactToProfile(username, password, contact, phoneNumb
 /*
 sends a message, message, from twilio to the provided phone number
 */
-export async function sendMessage(message, phoneNumber){
+export async function sendTwilioMessage(message, phoneNumber){
     try {
         const response = await fetch(backendURL + twilioPath + "/send", {
             method:"POST",
