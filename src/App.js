@@ -1,6 +1,6 @@
 /*global chrome*/
 import React, { useEffect, useState } from 'react';
-import * as BackendAPI from "./actions/BackendAPI"
+import * as BackendAPI from "./APIs/BackendAPI"
 
 const App = () => {
     const [username, setUsername] = useState("")
