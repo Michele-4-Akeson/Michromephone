@@ -9,6 +9,7 @@ const App = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [message, setMessage] = useState("")
     const [contactList, setContactList] = useState([])
+    const [token, setToken] = useState("")
     const [URL, setURL] = useState("")
 
     useEffect(()=>{
@@ -41,21 +42,43 @@ const App = () => {
     });
     */
 
-    async function getContacts(){
-        const response = await BackendAPI.getContacts(username, password)
+    useEffect(()=>{
+        console.log(token)
+    }, [token])
+
+    async function signIn(){
+        const response = await BackendAPI.getToken(username, password)
         if (response != null){
-            setContactList([...response.contacts])
+            setToken(response.token)
+            const x = await BackendAPI.getContacts(response.token)
+            
+            if (x != null){
+                setContactList([...x.contacts])
+            }
+        
         }
 
     }
 
+    async function signUp(){
+        const response = await BackendAPI.createProfile(username, password);
+
+        if (response.success){
+            BackendAPI.getToken(username, password)
+        }
+    }
+
     async function addContact(){
-        const response = await BackendAPI.addContactToProfile(username, password, contact, phoneNumber);
+        const response = await BackendAPI.addContactToProfile(token, contact, phoneNumber);
+
+        if (response.success){
+            console.log("success")
+        }
 
     }
 
     async function sendMessage(){
-        const response = await BackendAPI.sendMessage(message, phoneNumber);
+        const response = await BackendAPI.sendTwilioMessage(message, phoneNumber);
 
     }
 
@@ -71,6 +94,7 @@ const App = () => {
 
     return (
         <div>
+            <p>{token}</p>
             <form>
                 <label>username</label>
                 <input type="text" value={username} onChange={(e)=>setUsername(e.target.value)} placeholder='Add Contact...'/>
@@ -83,9 +107,11 @@ const App = () => {
                 <label>message</label>
                 <input type="text" value={message} onChange={(e)=>setMessage(e.target.value)} placeholder='Add Phone Number...'/>
             </form>
+            <button onClick={()=>signIn()}>Sign In</button>
+            <button onClick={()=>signUp()}>Sign Up</button>
             <button onClick={()=>addContact()}>Add Contact</button>
             <button onClick={()=>sendMessage()}>Send Message</button>
-            <button onClick={()=>getContacts()}>Get Contacts</button>
+            <button onClick={()=>signIn()}>Get Contacts</button>
             <button onClick={()=>sendChromeMessage()}>Send Chrome Message</button>
 
             <p>{URL}</p>
