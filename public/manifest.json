@@ -20,5 +20,9 @@
         "matches": ["<all_urls>"],
         "js": ["contentTest.js"]
     }
-  ]
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
 }
