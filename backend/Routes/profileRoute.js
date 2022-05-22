@@ -15,6 +15,7 @@ router.get("/token", async function(req, res){
         const queryPassword = req.query.password;
         
         const result = await Profile.findOne({username:queryUsername, password:queryPassword})
+        
         res.json({token:result.token})
 
     } catch (error){

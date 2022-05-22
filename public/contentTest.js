@@ -1,29 +1,9 @@
 chrome.runtime.onMessage.addListener(
-    function(message, sender, sendResponse) {
-        if (sender.tab){
-            console.log("message from a content script:" + sender.tab.url)
-        } else {
-            console.log("message from extention")
-        }
-
-        if (message.greeting == "hello"){
-            sendResponse({response:"hello from " + chrome.tab.url});
-        }
-     
+    function(request, sender, sendResponse) {
+      console.log(sender.tab ?
+                  "from a content script:" + sender.tab.url :
+                  "from the extension");
+      if (request.greeting === "hello")
+        sendResponse({farewell: "goodbye"});
     }
   );
-
-
-
-
-function sendFromContentScript(){
-    chrome.runtime.sendMessage({greeting: "hello" + chrome.tab.url}, function(response) {
-        console.log(response.farewell);
-    });
-
-    console.log('HELLO')
-}
-
-
-
-sendFromContentScript();
