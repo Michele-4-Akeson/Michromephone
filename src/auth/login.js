@@ -12,8 +12,15 @@ const Login = (props) => {
         e.preventDefault();
         
         // Call login api to get user token
-        const token = await getToken(state.username, state.password);
-        console.log(token);
+        const userData = await getToken(state.username, state.password);
+
+        if (userData) {
+            // Put token in local storage
+            props.setToken(userData.token);
+        } else {
+            alert("Invalid username or password")
+            setState({ ...state, username: "", password: "" })
+        }
     }
 
     return (

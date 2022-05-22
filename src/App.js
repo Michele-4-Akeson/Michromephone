@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Home from "./home/Home";
-import Login from './auth/login';
+import Auth from './auth/auth';
 import { useLocalStorage } from './CustomHooks/UseLocalStorage';
 
 const App = () => {
@@ -10,6 +10,6 @@ const App = () => {
     if (token)
         return <Home token={token}/>
 
-    return <Login setToken={setToken} />
+    return <Auth setToken={setToken} />
 }
 export default App;
