@@ -5,9 +5,9 @@ const Contacts = (props) => {
         <div>
             <h1>My Contacts</h1>
             <ul>
-                {props.contactList?.map(person => {
+                {props.contactList?.map((person, index) => {
                     return (
-                        <li key={person._id}>
+                        <li key={index}>
                             <p>{person.contact}</p>
                             <p>{person.phoneNumber}</p>
                         </li>)
