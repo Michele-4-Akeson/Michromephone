@@ -11,32 +11,46 @@ const VoiceRecognition = (props) => {
     const [isListening, setIsListening] = useState(false);
     const [note, setNotes] = useState();
 
-    const listen = () => {
-        setIsListening(!isListening)
+    useEffect(() => {
+        listen();
+    }, [isListening])
 
-        if (!isListening) {
+    const listen = () => {
+        if (isListening) {
             console.log("starting...")
             mic.start();
         } else {
+            console.log("stopped")
             mic.stop();
         }
-    }
 
-    // const grammar = '#JSGF V1.0; grammar colors; public <color> = aqua | azure | beige | bisque | black | blue | brown | chocolate | coral | crimson | cyan | fuchsia | ghostwhite | gold | goldenrod | gray | green | indigo | ivory | khaki | lavender | lime | linen | magenta | maroon | moccasin | navy | olive | orange | orchid | peru | pink | plum | purple | red | salmon | sienna | silver | snow | tan | teal | thistle | tomato | turquoise | violet | white | yellow ;'
-    
-    // const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
-    // const speechRecognitionList = new SpeechGrammarList();
-    // speechRecognitionList.addFromString(grammar, 1);
-    // mic.grammars = speechRecognitionList;
+        mic.onstart = () => {
+            console.log("Mic's on");
+        }
 
-    mic.onresult = (e) => {
-        console.log("ending")
-        console.log(e.results[0][0].transcript);
+        mic.onend = () => {
+            if (isListening) {
+                mic.start();
+            }
+        }
+
+        mic.onresult = (e) => {
+            const transcript = Array.from(e.results)
+                .map(result => result[0])
+                .map(result => result.transcript)
+                .join('')
+            
+            console.log(transcript);
+        }
+
+        mic.onerror = event => {
+            console.log(event.error)
+        }
     }
 
     return (
         <div>
-            <button onClick={() => listen()}>{
+            <button onClick={() => setIsListening(!isListening)}>{
                 isListening? "Turn off" : "Turn on"
             }</button>
         </div>

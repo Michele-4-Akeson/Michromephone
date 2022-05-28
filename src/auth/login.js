@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getToken } from '../APIs/BackendAPI';
+import { getToken } from '../Actions/BackendActions';
 
 const Login = (props) => {
     const [state, setState] = useState({"username": "", "password": ""});
@@ -12,8 +12,15 @@ const Login = (props) => {
         e.preventDefault();
         
         // Call login api to get user token
-        const token = await getToken(state.username, state.password);
-        console.log(token);
+        const userData = await getToken(state.username, state.password);
+
+        if (userData) {
+            // Put token in local storage
+            props.setToken(userData.token);
+        } else {
+            alert("Invalid username or password")
+            setState({ ...state, username: "", password: "" })
+        }
     }
 
     return (

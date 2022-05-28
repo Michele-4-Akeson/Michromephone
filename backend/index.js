@@ -34,13 +34,10 @@ const corsOptions ={
 Database Connection
 */
 
-mongoose.connect(process.env.MONGO_DB_CONNECTION)
-  .then(()=>console.log('connected to mongoDB'))
+mongoose.connect(
+    process.env.MONGO_DB_CONNECTION)
+  .then(()=>console.log('connected'))
   .catch(e=>console.log(e));
-
-
-
-
 
 
 /*

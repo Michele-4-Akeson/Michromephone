@@ -3,47 +3,71 @@ import React, { useEffect, useState } from 'react';
 import AddContact from './addContact';
 import Contacts from "./contacts";
 import VoiceRecognition from './voiceRecognition';
-import * as BackendActions from "../APIs/BackendAPI";
+import * as BackendActions from "../Actions/BackendActions";
+import { sendChromeMessage } from '../Actions/ChromeActions';
+import Loader from './Loader';
+
+
 
 const Home = (props) => {
+    const [isLoading, setIsLoading] = useState(true);
     const [contactList, setContactList] = useState([]);
     const [addContactVisible, setAddContactVisible] = useState(false);
+    const [transcript, setTrascript] = useState("")
+    const [port, setPort] = useState(null)
+    
+
 
     useEffect(() => {
 
-        // Get current tab information
-        chrome.tabs && chrome.tabs.query({
-            active: true,
-            currentWindow: true
-          }, tabs => {
-            console.log(tabs)
-          })
+        chrome.runtime.onMessage.addListener(
+            function(message, sender, sendResponse) {
+               console.log(message)
+               setTrascript(message.message)
+        });
 
-        // Get all contacts from database
+        setPort(chrome.runtime.connect({ name: "popup" }))
+
+
+        sendChromeMessage("toggleRecord")
+        
+
+
+
+
         getContacts();
+
+        setIsLoading(false);
     }, []);
 
+
+
+   
+
     async function getContacts(){
-        // const response = await BackendActions.getContacts(username, password)
-        // if (response != null){
-        //     setContactList([...response.contacts])
-        // }
+        const response = await BackendActions.getContacts(props.token)
+        if (response != null){
+            setContactList([...response.contacts])
+        }
     }
 
-    async function sendMessage(){
-        //const response = await BackendActions.sendMessage(message, phoneNumber);
-    }
+  
+
+    if (isLoading) return <Loader />
 
     return (
         <div>
-            <VoiceRecognition />
+            <p>{transcript}</p>
+            <button onClick={()=>sendChromeMessage("toggleRecord")}>send chrome Message</button>
             {addContactVisible?
+
                 // Add contact component
                 <div>
                     <AddContact 
                         contactList={contactList}
                         setContactList={setContactList}
-                        setAddContactVisible={setAddContactVisible} />
+                        setAddContactVisible={setAddContactVisible}
+                        token={props.token} />
                     <button onClick={()=>setAddContactVisible(false)}>Show contacts</button>
                 </div>:
 
@@ -52,10 +76,11 @@ const Home = (props) => {
                     <Contacts
                         contactList={contactList} />
                     <button onClick={()=>setAddContactVisible(true)}>Add Contact</button>
-                    <button onClick={()=>sendMessage()}>Send Message</button>
                 </div>
             }
         </div>
     )
 }
+
+
 export default Home; 

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import * as BackendActions from '../APIs/BackendAPI';
+import * as BackendActions from '../Actions/BackendActions';
 
 const AddContact = (props) => {
     const [state, setState] = useState({
-        username: "",
-        password: "",
         contact: "",
         phoneNumber: "",
     })
@@ -16,14 +14,13 @@ const AddContact = (props) => {
     async function addContact(e){
         e.preventDefault();
 
-        // Add contact to contactList state in App.js
-        props.setContactList([...props.contactList, {"_id": "1234", "contact": "Mike Smith", "phoneNumber": "911"}])
+        // Add contact to contactList state in Home.js
+        props.setContactList([...props.contactList, {"contact": state.contact, "phoneNumber": state.phoneNumber}])
 
         // Call API function to add contact to Monogo DB
-        // const response = await BackendActions.addContactToProfile(state.username, 
-        //                                                             state.password, 
-        //                                                             state.contact, 
-        //                                                             state.phoneNumber);
+        await BackendActions.addContactToProfile(props.token, state.contact, state.phoneNumber);
+
+        alert(state.contact + " at " + state.phoneNumber + " successfully added!")
 
         // Switch back to contacts interface
         props.setAddContactVisible(false);
@@ -35,13 +32,9 @@ const AddContact = (props) => {
             <form 
                 onChange={handleChange}
                 onSubmit={addContact}>
-                <label>username</label>
-                    <input name="username" type="text" value={state.username} required placeholder='Add username...'/><br />
-                <label>password</label>
-                    <input name="password" type="password" value={state.password} required placeholder='Add password...'/><br />
-                <label>contact name</label>
+                <label>Contact Name</label>
                     <input name="contact" type="text" value={state.contact} required placeholder='Add contact...'/><br />
-                <label>contact number</label>
+                <label>Contact Number</label>
                     <input name="phoneNumber" type="text" value={state.phoneNumber} required placeholder='Add phone number...'/><br />
                 <input type="submit" value="Save contact" />
             </form> 
