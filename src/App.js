@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Home from "./home/Home";
 import Auth from './auth/auth';
 import { useLocalStorage } from './CustomHooks/UseLocalStorage';
-import { sendChromeMessage } from './Actions/ChromeActions';
 
 const App = () => {
     const [token, setToken] = useLocalStorage("token", null);

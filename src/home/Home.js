@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import AddContact from './addContact';
 import Contacts from "./contacts";
-import VoiceRecognition from './voiceRecognition';
 import * as BackendActions from "../Actions/BackendActions";
 import { sendChromeMessage } from '../Actions/ChromeActions';
 import Loader from './Loader';
@@ -21,20 +20,25 @@ const Home = (props) => {
 
 
     useEffect(() => {
+        setPort(chrome.runtime && chrome.runtime.connect({ name: "popup" }))
+        sendChromeMessage("toggleRecord")
+
+
         chrome.runtime && chrome.runtime.onMessage.addListener(
             function(message, sender, sendResponse) {
-               console.log(message)
-
                if (message.text == "command"){
-                   let x = parseCommand(message.wordList)
-                   console.log(x)
+                   let parsedCommand = parseCommand(message.wordList)
+                   console.log("parsed command", parsedCommand)
                    
+               }
+
+
+               if (message.text == "transcript"){
+                   setTrascript(message.transcript)
                }
         });
 
-        setPort(chrome.runtime && chrome.runtime.connect({ name: "popup" }))
-
-        sendChromeMessage("toggleRecord")
+        
         
 
 
@@ -52,8 +56,13 @@ const Home = (props) => {
         // copy: copy from <x> to <y>
         // read: read from <x> to <y>
 
+
+
         let command;
-        let commandData;
+        let toIndex;
+        let fromIndex;
+        let what;
+
         for (let commandWord of commandList){
             if (wordList.includes(commandWord)){
                 command = commandWord
@@ -62,25 +71,23 @@ const Home = (props) => {
         }
 
 
-        switch(command){
-            case "send":
-                const toIndex = wordList.lastIndexOf("to")
-                if (toIndex != -1 && toIndex < wordList.length - 1){
-                    commandData = {command:command, name:wordList[toIndex + 1]}
-                    setTrascript("send")
-                    return commandData
-                }
-
-                break;
-            case "copy":
-                console.log("copy");
-                setTrascript("copy")
-                return "copy"
-                break;
+        try {
+            switch(command){
+                case "send":
+                    toIndex = wordList.lastIndexOf("to")
+                    what = wordList[toIndex - 1];
+                    return {command:command, what:what, to:wordList[toIndex + 1]}
                 
-              
-              
+                case "copy":
+                    fromIndex = wordList.indexOf("from")
+                    toIndex = wordList.lastIndexOf("to")
+                    return {command:command, from:wordList[fromIndex + 1], to:wordList[toIndex + 1]}
+            }
+
+        } catch (error){
+            console.log("could not parse", error)
         }
+      
 
     }
 

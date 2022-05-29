@@ -14,6 +14,7 @@ mic.intermResults = true
 mic.lang = 'en-US'
 let isListening = false
 let transcript = ""
+let lastWord = ""
 
 
 mic.onstart = () => {
@@ -27,17 +28,25 @@ mic.onend = () => {
 }
 
 mic.onresult = (e) => {
-    transcript += " " + Array.from(e.results)
-        .map(result => result[0])
-        .map(result => result.transcript)
-        .join('')
+    lastWord = Array.from(e.results)
+    .map(result => result[0])
+    .map(result => result.transcript)
+    .join('')
+    
+    if (transcript.length == 0){
+        transcript += lastWord
+    } else {
+        transcript += " " + lastWord
+    }
     
     console.log(transcript);
     const transcriptList = transcript.split(" ");
 
-    if (transcriptList.length >= 5){
-        transcript = "";
+    if (transcriptList.length >= 4){
         chrome.runtime.sendMessage({wordList:transcriptList, text: "command"})
+        chrome.runtime.sendMessage({text: "transcript", transcript:transcript})
+        transcript = "";
+       
     }
    
    
