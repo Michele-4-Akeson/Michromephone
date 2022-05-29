@@ -26,6 +26,13 @@ console.log("Background.js running..");
 
 let tabId = null;
 
+
+/*
+onConnect event fired when an extention/contentScript/backgroundScript connects to a port
+with a given name. This adds a onDisconnect event such that when the popup extention closes
+the contentScript is sent a message to stop recording
+*/
+
 chrome.runtime.onConnect.addListener(function(port) {
     if (port.name === "popup") {
         port.onDisconnect.addListener(function() {
@@ -35,6 +42,23 @@ chrome.runtime.onConnect.addListener(function(port) {
     }
 });
 
+
+
+
+
+/*
+onActivated event fired when the active tab is switched; sends message to previous tab
+to stop recording, and sets the tabId to the active tab
+*/
+chrome.tabs.onActivated.addListener(()=>{
+    if (tabId){
+        chrome.tabs.sendMessage(tabId, {text:"stopRecording"})
+    }
+
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        tabId = tabs[0].id
+      });
+})
 
 
 
@@ -51,17 +75,6 @@ function sendChromeMessage(text){
     }
     
 }
-
-
-chrome.tabs.onActivated.addListener(()=>{
-    if (tabId){
-        chrome.tabs.sendMessage(tabId, {text:"stopRecording"})
-    }
-
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        tabId = tabs[0].id
-      });
-})
 
 
 /*
