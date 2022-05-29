@@ -51,6 +51,10 @@ const Home = (props) => {
         }
     }
 
+    function sendPortMessage(){
+        port.postMessage({text:"hello from port"})
+    }
+
   
 
     if (isLoading) return <Loader />
@@ -59,6 +63,7 @@ const Home = (props) => {
         <div>
             <p>{transcript}</p>
             <button onClick={()=>sendChromeMessage("toggleRecord")}>send chrome Message</button>
+            <button onClick={()=>sendPortMessage()}>send chrome Message</button>
             {addContactVisible?
 
                 // Add contact component

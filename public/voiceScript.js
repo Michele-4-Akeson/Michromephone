@@ -1,7 +1,6 @@
 
 console.log("contentTest.js running...")
-chrome.runtime.connect()
-chrome.runtime.sendMessage({text:"tab changed"})
+//chrome.runtime.sendMessage({text:"tab changed"})
 
 chrome.runtime.onConnect.addListener(()=>{
     console.log("connected")
@@ -34,7 +33,13 @@ mic.onresult = (e) => {
         .join('')
     
     console.log(transcript);
-    chrome.runtime.sendMessage({message:transcript})
+    const transcriptList = transcript.split(" ");
+
+    if (transcriptList.length >= 5){
+        transcript = "";
+        chrome.runtime.sendMessage({wordList:transcriptList, text: "command"})
+    }
+   
    
 
 }
@@ -42,6 +47,9 @@ mic.onresult = (e) => {
 mic.onerror = event => {
     console.log(event.error)
 }
+
+
+
 
 
         
