@@ -19,15 +19,13 @@ const Home = (props) => {
 
 
     useEffect(() => {
-
-        chrome.runtime.onMessage.addListener(
+        chrome.runtime && chrome.runtime.onMessage.addListener(
             function(message, sender, sendResponse) {
                console.log(message)
                setTrascript(message.message)
         });
 
-        setPort(chrome.runtime.connect({ name: "popup" }))
-
+        setPort(chrome.runtime && chrome.runtime.connect({ name: "popup" }))
 
         sendChromeMessage("toggleRecord")
         
