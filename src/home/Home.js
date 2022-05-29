@@ -9,6 +9,8 @@ import Loader from './Loader';
 
 
 
+const commandList = ["send", "copy"]
+
 const Home = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [contactList, setContactList] = useState([]);
@@ -22,7 +24,12 @@ const Home = (props) => {
         chrome.runtime && chrome.runtime.onMessage.addListener(
             function(message, sender, sendResponse) {
                console.log(message)
-               setTrascript(message.message)
+
+               if (message.text == "command"){
+                   let x = parseCommand(message.wordList)
+                   console.log(x)
+                   
+               }
         });
 
         setPort(chrome.runtime && chrome.runtime.connect({ name: "popup" }))
@@ -39,6 +46,43 @@ const Home = (props) => {
     }, []);
 
 
+    function parseCommand(wordList){
+        // we can look at wit.ai API to create more inuitive experience 
+        // send: send link to <name>
+        // copy: copy from <x> to <y>
+        // read: read from <x> to <y>
+
+        let command;
+        let commandData;
+        for (let commandWord of commandList){
+            if (wordList.includes(commandWord)){
+                command = commandWord
+                break;
+            }
+        }
+
+
+        switch(command){
+            case "send":
+                const toIndex = wordList.lastIndexOf("to")
+                if (toIndex != -1 && toIndex < wordList.length - 1){
+                    commandData = {command:command, name:wordList[toIndex + 1]}
+                    setTrascript("send")
+                    return commandData
+                }
+
+                break;
+            case "copy":
+                console.log("copy");
+                setTrascript("copy")
+                return "copy"
+                break;
+                
+              
+              
+        }
+
+    }
 
    
 

@@ -27,7 +27,7 @@ mic.onend = () => {
 }
 
 mic.onresult = (e) => {
-    transcript += Array.from(e.results)
+    transcript += " " + Array.from(e.results)
         .map(result => result[0])
         .map(result => result.transcript)
         .join('')
