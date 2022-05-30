@@ -6,7 +6,9 @@ import VoiceRecognition from './voiceRecognition';
 import * as BackendActions from "../Actions/BackendActions";
 import { sendChromeMessage } from '../Actions/ChromeActions';
 import Loader from './Loader';
-
+import '../styles/home.css';
+import '../styles/contacts.css';
+import '../styles/elements.css';
 
 
 const Home = (props) => {
@@ -54,13 +56,13 @@ const Home = (props) => {
     if (isLoading) return <Loader />
 
     return (
-        <div>
+        <div className='home'>
             <p>{transcript}</p>
-            <button onClick={()=>sendChromeMessage("toggleRecord")}>send chrome Message</button>
+            {/* <button onClick={()=>sendChromeMessage("toggleRecord")}>send chrome Message</button> */}
             {addContactVisible?
 
                 // Add contact component
-                <div>
+                <div className='add-contacts'>
                     <AddContact 
                         contactList={contactList}
                         setContactList={setContactList}
@@ -70,10 +72,19 @@ const Home = (props) => {
                 </div>:
 
                 // List of contacts component
-                <div>
+                <div className='contacts'>
+                    <div className='contacts-header'>
+                        <h1 className='contacts-header-text'>My Contacts</h1>
+                        <button 
+                            className='btn-primary'
+                            onClick={()=>setAddContactVisible(true)}>
+                            <span className='plus'>&#43;</span>
+                            <p>Add Contact</p>
+                        </button>
+                    </div>
+                    <p className='contacts-header-text-sub'>There are {contactList.length} total contacts.</p>
                     <Contacts
                         contactList={contactList} />
-                    <button onClick={()=>setAddContactVisible(true)}>Add Contact</button>
                 </div>
             }
         </div>
