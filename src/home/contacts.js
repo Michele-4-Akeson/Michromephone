@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 const Contacts = (props) => {
     return (
-        <div>
-            <h1>My Contacts</h1>
+        <div className='contacts-list'>
             <ul>
                 {props.contactList?.map((person, index) => {
                     return (
-                        <li key={index}>
-                            <p>{person.contact}</p>
-                            <p>{person.phoneNumber}</p>
+                        <li 
+                            key={index}
+                            className="contacts-list-item">
+                            <p className='contact-name'>{person.contact}</p>
+                            <p className='contact-number'>{person.phoneNumber}</p>
                         </li>)
                 })}
             </ul>

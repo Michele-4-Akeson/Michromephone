@@ -1,0 +1,32 @@
+.btn-primary {
+    border: none;
+    color: white;
+    background-color: #7c5dfa;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 500;
+    padding: 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 20px;
+    padding: 20px 15px 20px 10px;
+    border-radius: 10rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: rgb(146, 119, 255);
+}
+
+.plus {
+    font-size: 1.5rem;
+    color: #7c5dfa;
+    background-color: white;
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    line-height: 30px;
+}

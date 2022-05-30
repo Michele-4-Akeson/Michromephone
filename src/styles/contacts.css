@@ -1,0 +1,43 @@
+.contacts-header {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 3px;
+}
+
+.contacts-header-text {
+    font-size: 2.3rem;
+    margin: 0;
+}
+
+.contacts-header-text-sub {
+    color: #737791;
+    font-weight: 300;
+    font-size: 0.9rem;
+}
+
+.contacts-list ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.contacts-list-item {
+    background-color: white;
+    margin: 15px 0px;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #ededf1;
+    display: flex;
+}
+
+.contact-number {
+    margin: 0;
+    color: #737791;
+    font-weight: 300;
+    font-size: 0.9rem;
+}
+
+.contact-name {
+    margin: 0;
+    flex: 1;
+}

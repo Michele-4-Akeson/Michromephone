@@ -1,7 +1,6 @@
 
 console.log("contentTest.js running...")
-chrome.runtime.connect()
-chrome.runtime.sendMessage({text:"tab changed"})
+//chrome.runtime.sendMessage({text:"tab changed"})
 
 chrome.runtime.onConnect.addListener(()=>{
     console.log("connected")
@@ -15,6 +14,7 @@ mic.intermResults = true
 mic.lang = 'en-US'
 let isListening = false
 let transcript = ""
+let lastWord = ""
 
 
 mic.onstart = () => {
@@ -28,13 +28,27 @@ mic.onend = () => {
 }
 
 mic.onresult = (e) => {
-    transcript += Array.from(e.results)
-        .map(result => result[0])
-        .map(result => result.transcript)
-        .join('')
+    lastWord = Array.from(e.results)
+    .map(result => result[0])
+    .map(result => result.transcript)
+    .join('')
+    
+    if (transcript.length == 0){
+        transcript += lastWord
+    } else {
+        transcript += " " + lastWord
+    }
     
     console.log(transcript);
-    chrome.runtime.sendMessage({message:transcript})
+    const transcriptList = transcript.split(" ");
+
+    if (transcriptList.length >= 4){
+        chrome.runtime.sendMessage({wordList:transcriptList, text: "command"})
+        chrome.runtime.sendMessage({text: "transcript", transcript:transcript})
+        transcript = "";
+       
+    }
+   
    
 
 }
@@ -42,6 +56,9 @@ mic.onresult = (e) => {
 mic.onerror = event => {
     console.log(event.error)
 }
+
+
+
 
 
         

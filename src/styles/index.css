@@ -5,8 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 600px;
-  height: 400px;
+  box-sizing: border-box;
+  font-family: 'League Spartan', sans-serif;
+  /* width: 600px;
+  height: 400px; */
+  background-color: #f8f8fb;
 }
 
 code {

@@ -39,7 +39,13 @@ chrome.runtime.onConnect.addListener(function(port) {
            console.log("popup has been closed")
            sendChromeMessage("stopRecording")
         });
+
+        port.onMessage.addListener((message)=>{
+            console.log(message)
+        })
     }
+
+
 });
 
 
@@ -77,7 +83,7 @@ function sendChromeMessage(text){
 }
 
 
-/*
+
 
 // activates recording when navigation to new tab
 
@@ -88,9 +94,13 @@ chrome.runtime.onMessage.addListener(
         if (message.text == "tab changed"){
             sendChromeMessage("startRecording")
         }
+
+        if (message.text =="command"){
+            console.log(message.wordList)
+        }
     }
 )
-*/
+
 
 
 
