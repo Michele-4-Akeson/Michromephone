@@ -20,3 +20,7 @@ code {
 p {
   display: inline;
 }
+
+input {
+  display: block;
+}

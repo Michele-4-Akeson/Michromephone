@@ -8,6 +8,7 @@ import Loader from './Loader';
 import '../styles/home.css';
 import '../styles/contacts.css';
 import '../styles/elements.css';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 
 const commandList = ["send", "copy"]
@@ -15,7 +16,7 @@ const commandList = ["send", "copy"]
 const Home = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [contactList, setContactList] = useState([]);
-    const [addContactVisible, setAddContactVisible] = useState(false);
+    const [addContactVisible, setAddContactVisible] = useState(true);
     const [transcript, setTrascript] = useState("")
     const [port, setPort] = useState(null)
     
@@ -119,20 +120,26 @@ const Home = (props) => {
 
                 // Add contact component
                 <div className='add-contacts'>
+                    <a  className = "back-button"
+                        onClick={()=>setAddContactVisible(false)}>
+                        <span className='back-arrow'>
+                            <ArrowBackIosIcon fontSize="inherit" />
+                        </span>
+                        <p>Go back</p>
+                    </a>
                     <AddContact 
                         contactList={contactList}
                         setContactList={setContactList}
                         setAddContactVisible={setAddContactVisible}
                         token={props.token} />
-                    <button onClick={()=>setAddContactVisible(false)}>Show contacts</button>
                 </div>:
 
                 // List of contacts component
                 <div className='contacts'>
                     <div className='contacts-header'>
-                        <h1 className='contacts-header-text'>My Contacts</h1>
+                        <h1 className='heading_main'>My Contacts</h1>
                         <button 
-                            className='btn-primary'
+                            className='btn-primary add-contact-button'
                             onClick={()=>setAddContactVisible(true)}>
                             <span className='plus'>&#43;</span>
                             <p>Add Contact</p>

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import * as BackendActions from '../Actions/BackendActions';
+import "../styles/elements.css";
+import "../styles/contacts.css";
 
 const AddContact = (props) => {
     const [state, setState] = useState({
@@ -28,15 +30,26 @@ const AddContact = (props) => {
 
     return (
         <div>
-            <h1>Add New Contact</h1>
+            <h1 className='heading_main'>Add New Contact</h1>
             <form 
                 onChange={handleChange}
-                onSubmit={addContact}>
-                <label>Contact Name</label>
-                    <input name="contact" type="text" value={state.contact} required placeholder='Add contact...'/><br />
-                <label>Contact Number</label>
-                    <input name="phoneNumber" type="text" value={state.phoneNumber} required placeholder='Add phone number...'/><br />
-                <input type="submit" value="Save contact" />
+                onSubmit={addContact}
+                className='add-contact-form'>
+                <label className='form-label'>Contact Name</label>
+                    <input 
+                        name="contact" 
+                        type="text" 
+                        className="form-input"
+                        value={state.contact} 
+                        required />
+                <label className='form-label'>Contact Number</label>
+                    <input 
+                        name="phoneNumber" 
+                        type="text" 
+                        className="form-input"
+                        value={state.phoneNumber} 
+                        required />
+                <input type="submit" className="btn-primary save-contact" value="Save contact" />
             </form> 
         </div>
     )
