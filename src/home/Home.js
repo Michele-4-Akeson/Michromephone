@@ -110,28 +110,6 @@ const Home = (props) => {
         port.postMessage({text:"hello from port"})
     }
 
-    // const contactList_anim = useAnimation()
-    // const addContact_anim = useAnimation()
-
-    // const loadAddContactsComp = async () => {
-    //     await contactList_anim.start({
-    //         x: "-100%",
-    //         opacity: ["1", "0"],
-    //         transition: { duration: 1 },
-    //         })
-    //     await addContact_anim.start({ opacity: 1 })
-    //     setAddContactVisible(true)
-    // }
-
-    // const loadContactsListcomp = async () => {
-    //     await addContact_anim.start({
-    //         x: "100%",
-    //         opacity: ["1", "0"],
-    //         transition: { duration: 1 },
-    //         })
-    //     setAddContactVisible(false)
-    // }
-
     if (isLoading) return <Loader />
 
     return (

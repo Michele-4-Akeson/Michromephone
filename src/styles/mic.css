@@ -29,7 +29,7 @@
 
 
 .pulse {
-    background: rgb(146, 119, 255);
+    background: #7c5dfa;
     animation: pulse-animation 2s infinite;
   }
   
