@@ -2,12 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import AddContact from './addContact';
 import Contacts from "./contacts";
+import { Mic } from './Mic';
 import * as BackendActions from "../Actions/BackendActions";
 import { sendChromeMessage } from '../Actions/ChromeActions';
 import Loader from './Loader';
 import '../styles/home.css';
 import '../styles/contacts.css';
 import '../styles/elements.css';
+
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -171,6 +173,9 @@ const Home = (props) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0, x: -200, transition: { duration: 0.5 } }}
                         transition={{ duration: 1 }}>
+                        
+                        <Mic transcript={transcript}/>
+                        
                         <div className='contacts-header'>
                             <h1 className='heading_main contacts-header-h1'>My Contacts</h1>
                             <button 

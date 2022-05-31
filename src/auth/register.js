@@ -3,6 +3,7 @@ import { getToken, createProfile } from "../Actions/BackendActions";
 
 const Auth = (props) => {
     const [state, setState] = useState({"username": "", "password": "", "passwordConfirm": ""});
+    const [registerMessage, setRegisterMessage] = useState("")
 
     const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value })
@@ -18,18 +19,27 @@ const Auth = (props) => {
         }
 
         // Create profile
-        await createProfile(state.username, state.password);
+        
+        const response = await createProfile(state.username, state.password);
 
-        // Log profile in
-        const userData = await getToken(state.username, state.password);
-        if (userData) {
-            // Put token in local storage
-            props.setToken(userData.token);
+        if (response.success){
+            // Log profile in
+            const userData = await getToken(state.username, state.password);
+            if (userData) {
+                // Put token in local storage
+                props.setToken(userData.token);
+            }
+
+        } else {
+            setRegisterMessage("Username already taken")
         }
+
+       
     }
 
     return (
         <div>
+            <h4>{registerMessage}</h4>
             <h1 className='heading_main auth-heading'>Register</h1>
             <form onChange={handleChange} onSubmit={handleSubmit}>
                 <label className='form-label'>Username</label>
