@@ -9,6 +9,7 @@ import '../styles/home.css';
 import '../styles/contacts.css';
 import '../styles/elements.css';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { motion, AnimatePresence } from "framer-motion"
 
 
 const commandList = ["send", "copy"]
@@ -16,7 +17,7 @@ const commandList = ["send", "copy"]
 const Home = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [contactList, setContactList] = useState([]);
-    const [addContactVisible, setAddContactVisible] = useState(true);
+    const [addContactVisible, setAddContactVisible] = useState(false);
     const [transcript, setTrascript] = useState("")
     const [port, setPort] = useState(null)
     
@@ -107,7 +108,27 @@ const Home = (props) => {
         port.postMessage({text:"hello from port"})
     }
 
-  
+    // const contactList_anim = useAnimation()
+    // const addContact_anim = useAnimation()
+
+    // const loadAddContactsComp = async () => {
+    //     await contactList_anim.start({
+    //         x: "-100%",
+    //         opacity: ["1", "0"],
+    //         transition: { duration: 1 },
+    //         })
+    //     await addContact_anim.start({ opacity: 1 })
+    //     setAddContactVisible(true)
+    // }
+
+    // const loadContactsListcomp = async () => {
+    //     await addContact_anim.start({
+    //         x: "100%",
+    //         opacity: ["1", "0"],
+    //         transition: { duration: 1 },
+    //         })
+    //     setAddContactVisible(false)
+    // }
 
     if (isLoading) return <Loader />
 
@@ -116,40 +137,54 @@ const Home = (props) => {
             <p>{transcript}</p>
             <button onClick={()=>sendChromeMessage("toggleRecord")}>send chrome Message</button>
             <button onClick={()=>sendPortMessage()}>send chrome Message</button>
-            {addContactVisible?
 
-                // Add contact component
-                <div className='add-contacts'>
-                    <a  className = "back-button"
-                        onClick={()=>setAddContactVisible(false)}>
-                        <span className='back-arrow'>
-                            <ArrowBackIosIcon fontSize="inherit" />
-                        </span>
-                        <p>Go back</p>
-                    </a>
-                    <AddContact 
-                        contactList={contactList}
-                        setContactList={setContactList}
-                        setAddContactVisible={setAddContactVisible}
-                        token={props.token} />
-                </div>:
-
-                // List of contacts component
-                <div className='contacts'>
-                    <div className='contacts-header'>
-                        <h1 className='heading_main'>My Contacts</h1>
-                        <button 
-                            className='btn-primary add-contact-button'
-                            onClick={()=>setAddContactVisible(true)}>
-                            <span className='plus'>&#43;</span>
-                            <p>Add Contact</p>
-                        </button>
-                    </div>
-                    <p className='contacts-header-text-sub'>There are {contactList.length} total contacts.</p>
-                    <Contacts
-                        contactList={contactList} />
-                </div>
-            }
+            <AnimatePresence exitBeforeEnter>
+                {/* Add contact component */}
+                {addContactVisible &&
+                    <motion.div 
+                        className='add-contacts'
+                        key='add-contacts'
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, x: 200, transition: { duration: 0.5 } }}
+                        transition={{ duration: 1 }}>
+                        <a  className = "back-button"
+                            onClick={()=>setAddContactVisible(false)}>
+                            <span className='back-arrow'>
+                                <ArrowBackIosIcon fontSize="inherit" />
+                            </span>
+                            <p>Go back</p>
+                        </a>
+                        <AddContact 
+                            contactList={contactList}
+                            setContactList={setContactList}
+                            setAddContactVisible={setAddContactVisible}
+                            token={props.token} />
+                    </motion.div>}
+            
+                {/* Add contact component */}
+                {!addContactVisible &&
+                    <motion.div 
+                        className='contacts' 
+                        key="conacts"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, x: -200, transition: { duration: 0.5 } }}
+                        transition={{ duration: 1 }}>
+                        <div className='contacts-header'>
+                            <h1 className='heading_main'>My Contacts</h1>
+                            <button 
+                                className='btn-primary add-contact-button'
+                                onClick={()=>setAddContactVisible(true)}>
+                                <span className='plus'>&#43;</span>
+                                <p>Add Contact</p>
+                            </button>
+                        </div>
+                        <p className='contacts-header-text-sub'>There are {contactList.length} total contacts.</p>
+                        <Contacts
+                            contactList={contactList} />
+                    </motion.div>}
+            </AnimatePresence>
         </div>
     )
 }
