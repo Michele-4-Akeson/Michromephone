@@ -30,15 +30,15 @@ const Auth = (props) => {
 
     return (
         <div>
-            <h1>Register</h1>
+            <h1 className='heading_main auth-heading'>Register</h1>
             <form onChange={handleChange} onSubmit={handleSubmit}>
-                <label>Username</label>
-                    <input type="text" name="username" value={state.username} /><br />
-                <label>Password</label>
-                    <input type="password" name="password" value={state.password} /><br />
-                <label>Confirm Password</label>
-                    <input type="password" name="passwordConfirm" value={state.passwordConfirm} /><br />
-                <input type="submit" value="Register" />
+                <label className='form-label'>Username</label>
+                    <input className='form-input' type="text" name="username" value={state.username} required />
+                <label className='form-label'>Password</label>
+                    <input className='form-input' type="password" name="password" value={state.password} required />
+                <label className='form-label'>Confirm Password</label>
+                    <input className='form-input' type="password" name="passwordConfirm" value={state.passwordConfirm} required />
+                <input className='btn-primary' type="submit" value="Register" />
             </form>
         </div>
     )

@@ -134,10 +134,10 @@ const Home = (props) => {
 
     return (
         <div className='home'>
-            <p>{transcript}</p>
-            <button onClick={()=>sendChromeMessage("toggleRecord")}>send chrome Message</button>
-            <button onClick={()=>sendPortMessage()}>send chrome Message</button>
-
+            {/* <p>{transcript}</p> */}
+            {/* <button onClick={()=>sendChromeMessage("toggleRecord")}>send chrome Message</button>
+            <button onClick={()=>sendPortMessage()}>send chrome Message</button> */}
+            
             <AnimatePresence exitBeforeEnter>
                 {/* Add contact component */}
                 {addContactVisible &&
@@ -153,7 +153,7 @@ const Home = (props) => {
                             <span className='back-arrow'>
                                 <ArrowBackIosIcon fontSize="inherit" />
                             </span>
-                            <p>Go back</p>
+                            <p className='go-back-text'>Go back</p>
                         </a>
                         <AddContact 
                             contactList={contactList}
@@ -172,7 +172,7 @@ const Home = (props) => {
                         exit={{ opacity: 0, x: -200, transition: { duration: 0.5 } }}
                         transition={{ duration: 1 }}>
                         <div className='contacts-header'>
-                            <h1 className='heading_main'>My Contacts</h1>
+                            <h1 className='heading_main contacts-header-h1'>My Contacts</h1>
                             <button 
                                 className='btn-primary add-contact-button'
                                 onClick={()=>setAddContactVisible(true)}>

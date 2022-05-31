@@ -1,0 +1,24 @@
+.auth-page {
+    padding: 30px;
+}
+
+.auth-heading {
+    margin-bottom: 10px;
+}
+
+.auth-redirect {
+    font-weight: 300;
+    margin-top: 15px;
+    display: inline-block;
+}
+
+.auth-link {
+    color: #7c5dfa;
+    margin-left: 5px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}

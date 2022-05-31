@@ -1,3 +1,7 @@
+.contacts, .add-contacts {
+    width: 100%;
+}
+
 .contacts-header {
     display: flex;
     gap: 40px;
@@ -5,24 +9,40 @@
     margin-bottom: 3px;
 }
 
+.contacts-header-h1 {
+    flex: 1;
+}
+
 .contacts-header-text-sub {
     color: #737791;
     font-weight: 300;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    margin: 0;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.contacts-list {
+    overflow: scroll;
+    height: 180px;
 }
 
 .contacts-list ul {
     padding: 0;
     list-style-type: none;
+    margin: 0;
 }
 
 .contacts-list-item {
     background-color: white;
-    margin: 15px 0px;
     padding: 1rem 1.5rem;
     border-radius: 8px;
     border: 1px solid #ededf1;
     display: flex;
+}
+
+.contacts-list-item:not(:last-child) {
+    margin-bottom: 15px;
 }
 
 .contact-number {
@@ -38,8 +58,13 @@
 }
 
 .add-contact-button {
-    height: 20px;
-    padding: 20px 15px 20px 10px;
+    height: 15px;
+    padding: 15px 12px 15px 8px;
+    font-size: 0.8rem;
+}
+
+.go-back-text {
+    margin: 0;
 }
 
 .add-contact-form {

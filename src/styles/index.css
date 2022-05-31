@@ -7,8 +7,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
   font-family: 'League Spartan', sans-serif;
-  /* width: 600px;
-  height: 400px; */
+  width: 400px;
+  height: 300px;
   background-color: #f8f8fb;
 }
 

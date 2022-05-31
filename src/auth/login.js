@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { getToken } from '../Actions/BackendActions';
+import "../styles/elements.css";
 
 const Login = (props) => {
     const [state, setState] = useState({"username": "", "password": ""});
@@ -25,13 +26,13 @@ const Login = (props) => {
 
     return (
         <div>
-            <h1>Log In</h1>
+            <h1 className='heading_main auth-heading'>Log In</h1>
             <form onChange={handleChange} onSubmit={handleSubmit}>
-                <label>Username</label>
-                    <input type="text" name="username" value={state.username} /><br />
-                <label>Password</label>
-                    <input type="password" name="password" value={state.password} /><br />
-                <input type="submit" value="Log in" />
+                <label className='form-label'>Username</label>
+                    <input className='form-input' type="text" name="username" value={state.username} required />
+                <label className='form-label'>Password</label>
+                    <input className='form-input' type="password" name="password" value={state.password} required />
+                <input className='btn-primary' type="submit" value="Log in" />
             </form>
         </div>
     )
