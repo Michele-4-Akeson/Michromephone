@@ -20,6 +20,7 @@ const Home = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [contactList, setContactList] = useState([]);
     const [addContactVisible, setAddContactVisible] = useState(false);
+    const [isRecording, setIsRecording] = useState(true);
     const [transcript, setTrascript] = useState("")
     const [port, setPort] = useState(null)
     
@@ -27,37 +28,36 @@ const Home = (props) => {
 
     useEffect(() => {
         setPort(chrome.runtime && chrome.runtime.connect({ name: "popup" }))
-        sendChromeMessage("toggleRecord")
-
+        sendChromeMessage({text:"toggleRecord"})
+        getContacts();
 
         chrome.runtime && chrome.runtime.onMessage.addListener(
             function(message, sender, sendResponse) {
-               if (message.text == "command"){
-                   let parsedCommand = parseCommand(message.wordList)
-                   console.log("parsed command", parsedCommand)
-                   
-               }
-
-
-               if (message.text == "transcript"){
-                   setTrascript(message.transcript)
-               }
+                switch (message.text){
+                    case "command":
+                        let parsedCommand = parseCommand(message.wordList)
+                        console.log("parsed command", parsedCommand)  
+                        break;
+                    case "transcript":
+                        setTrascript(message.transcript)
+                        break;
+                }
+           
         });
 
-        
-        
-
-
-
-
-        getContacts();
-
         setIsLoading(false);
+
+
     }, []);
 
 
+    function toggleRecord(){
+        sendChromeMessage({text:"toggleRecord"})
+        setIsRecording(!isRecording)
+    }
+
+
     function parseCommand(wordList){
-        // we can look at wit.ai API to create more inuitive experience 
         // send: send link to <name>
         // copy: copy from <x> to <y>
         // read: read from <x> to <y>
@@ -87,6 +87,7 @@ const Home = (props) => {
                 case "copy":
                     fromIndex = wordList.indexOf("from")
                     toIndex = wordList.lastIndexOf("to")
+                    sendChromeMessage({text:"test", start:wordList[fromIndex + 1], end:wordList[toIndex + 1]})
                     return {command:command, from:wordList[fromIndex + 1], to:wordList[toIndex + 1]}
             }
 
@@ -106,17 +107,14 @@ const Home = (props) => {
         }
     }
 
-    function sendPortMessage(){
-        port.postMessage({text:"hello from port"})
-    }
+
+
+
 
     if (isLoading) return <Loader />
 
     return (
         <div className='home'>
-            {/* <p>{transcript}</p> */}
-            {/* <button onClick={()=>sendChromeMessage("toggleRecord")}>send chrome Message</button>
-            <button onClick={()=>sendPortMessage()}>send chrome Message</button> */}
             
             <AnimatePresence exitBeforeEnter>
                 {/* Add contact component */}
@@ -151,8 +149,7 @@ const Home = (props) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0, x: -200, transition: { duration: 0.5 } }}
                         transition={{ duration: 1 }}>
-                        
-                        <Mic transcript={transcript}/>
+                        <Mic transcript={transcript} toggleRecord={toggleRecord} isRecording={isRecording}/>
                         
                         <div className='contacts-header'>
                             <h1 className='heading_main contacts-header-h1'>My Contacts</h1>

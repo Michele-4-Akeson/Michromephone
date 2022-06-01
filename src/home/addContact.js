@@ -9,6 +9,8 @@ const AddContact = (props) => {
         phoneNumber: "",
     })
 
+    const [message, setMessage] = useState("")
+
     const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value })
     }
@@ -16,21 +18,29 @@ const AddContact = (props) => {
     async function addContact(e){
         e.preventDefault();
 
-        // Add contact to contactList state in Home.js
-        props.setContactList([...props.contactList, {"contact": state.contact, "phoneNumber": state.phoneNumber}])
-
+      
         // Call API function to add contact to Monogo DB
-        await BackendActions.addContactToProfile(props.token, state.contact, state.phoneNumber);
+        const response = await BackendActions.addContactToProfile(props.token, state.contact, state.phoneNumber);
 
-        alert(state.contact + " at " + state.phoneNumber + " successfully added!")
+        if (response != null && response.success){
+            alert(state.contact + " at " + state.phoneNumber + " successfully added!")
+            // Add contact to contactList state in Home.js
+            props.setContactList([...props.contactList, {"contact": state.contact, "phoneNumber": state.phoneNumber}])
+            // Switch back to contacts interface
+            props.setAddContactVisible(false);
+        } else {
+            setMessage("unable to add contact")
+        }
 
-        // Switch back to contacts interface
-        props.setAddContactVisible(false);
+        
+
+        
     }
 
     return (
         <div>
             <h1 className='heading_main'>Add New Contact</h1>
+            <h3>{message}</h3>
             <form 
                 onChange={handleChange}
                 onSubmit={addContact}

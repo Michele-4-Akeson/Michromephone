@@ -107,6 +107,7 @@ export async function addContactToProfile(token, contact, phoneNumber){
     
     } catch (error){
         console.log(error);
+        return null
     }
 
 }

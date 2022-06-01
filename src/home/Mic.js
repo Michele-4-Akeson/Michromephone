@@ -3,14 +3,10 @@ import "../styles/mic.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons'
 import { sendChromeMessage } from '../Actions/ChromeActions';
-export const Mic = ({transcript}) => {
-    const [isRecording, setIsRecording] = useState(true);
+export const Mic = ({transcript, isRecording, toggleRecord}) => {
 
 
-    function toggleRecord(){
-        sendChromeMessage("toggleRecord")
-        setIsRecording(!isRecording)
-    }
+    
 
   return (
     <div className='mic-container'>

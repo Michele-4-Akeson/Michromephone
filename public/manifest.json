@@ -13,12 +13,13 @@
       "128": "logo192.png"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "clipboardWrite"  
   ],
   "content_scripts": [
     {
         "matches": ["http://*/*", "https://*/*"],
-        "js": ["voiceScript.js"]
+        "js": ["voiceScript.js", "copyScript.js"]
     }
   ],
 

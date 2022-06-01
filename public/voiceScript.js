@@ -1,10 +1,8 @@
 
 console.log("contentTest.js running...")
-//chrome.runtime.sendMessage({text:"tab changed"})
 
-chrome.runtime.onConnect.addListener(()=>{
-    console.log("connected")
-})
+
+
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 const mic = new SpeechRecognition()
@@ -59,11 +57,6 @@ mic.onerror = event => {
 
 
 
-
-
-        
-
-   
 
 chrome.runtime.onMessage.addListener(
     function(message, sender, sendResponse) {

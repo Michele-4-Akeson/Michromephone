@@ -91,13 +91,23 @@ function sendChromeMessage(text){
 chrome.runtime.onMessage.addListener(
     function(message, sender, sendResponse){
         console.log("message recived", message)
-        if (message.text == "tab changed"){
-            sendChromeMessage("startRecording")
-        }
+        switch (message.text){
+            case "tab changed":
+                sendChromeMessage("startRecording")
+                break;
+            
+            case "copy to clipboard":{
+                navigator.clipboard.writeText(message.data).then(()=>{
+                    alert("copied " + message.data)
+                })
 
-        if (message.text =="command"){
-            console.log(message.wordList)
+            }
+            
+            case "command":
+                console.log(message.wordList)
+                break;
         }
+     
     }
 )
 
