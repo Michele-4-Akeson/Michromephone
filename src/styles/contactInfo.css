@@ -1,0 +1,68 @@
+
+
+
+
+
+.user-background {
+    margin: auto;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background:#7c5dfa; 
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+  .user-icon{
+      width: 60%;
+      height: 60%;
+  }
+
+
+  .user-container{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+
+
+  
+
+.contact-info-item {
+    background-color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #ededf1;
+    display: flex;
+    margin-top: 10px;
+}
+
+.contact-info-item:hover{
+    background-color: rgb(212, 211, 211);
+
+}
+
+
+.contact-info-item:active{
+    background-color: #737791;
+}
+
+
+
+.send-input{
+    height: 30px;
+    width: 100%;
+    border: 1px solid #dddde1;
+    border-radius: 4px;
+    font-family: 'League Spartan', sans-serif;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    height: 24px;
+}
+
+
+ 

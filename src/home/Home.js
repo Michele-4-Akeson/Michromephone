@@ -9,17 +9,22 @@ import Loader from './Loader';
 import '../styles/home.css';
 import '../styles/contacts.css';
 import '../styles/elements.css';
+import '../styles/contactInfo.css';
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { motion, AnimatePresence } from "framer-motion"
+import { ContactInfo } from './ContactInfo';
 
 
-const commandList = ["send", "copy"]
+
 
 const Home = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [contactList, setContactList] = useState([]);
     const [addContactVisible, setAddContactVisible] = useState(false);
+    const [contactVisible, setContactVisible] = useState(true);
+    const [contactInfoVisible, setContactInforVisible] = useState(false)
+    const [contactInfo, setContactInfo] = useState(null);
     const [isRecording, setIsRecording] = useState(true);
     const [transcript, setTrascript] = useState("")
     const [port, setPort] = useState(null)
@@ -34,10 +39,6 @@ const Home = (props) => {
         chrome.runtime && chrome.runtime.onMessage.addListener(
             function(message, sender, sendResponse) {
                 switch (message.text){
-                    case "command":
-                        let parsedCommand = parseCommand(message.wordList)
-                        console.log("parsed command", parsedCommand)  
-                        break;
                     case "transcript":
                         setTrascript(message.transcript)
                         break;
@@ -57,46 +58,6 @@ const Home = (props) => {
     }
 
 
-    function parseCommand(wordList){
-        // send: send link to <name>
-        // copy: copy from <x> to <y>
-        // read: read from <x> to <y>
-
-
-
-        let command;
-        let toIndex;
-        let fromIndex;
-        let what;
-
-        for (let commandWord of commandList){
-            if (wordList.includes(commandWord)){
-                command = commandWord
-                break;
-            }
-        }
-
-
-        try {
-            switch(command){
-                case "send":
-                    toIndex = wordList.lastIndexOf("to")
-                    what = wordList[toIndex - 1];
-                    return {command:command, what:what, to:wordList[toIndex + 1]}
-                
-                case "copy":
-                    fromIndex = wordList.indexOf("from")
-                    toIndex = wordList.lastIndexOf("to")
-                    sendChromeMessage({text:"test", start:wordList[fromIndex + 1], end:wordList[toIndex + 1]})
-                    return {command:command, from:wordList[fromIndex + 1], to:wordList[toIndex + 1]}
-            }
-
-        } catch (error){
-            console.log("could not parse", error)
-        }
-      
-
-    }
 
    
 
@@ -107,8 +68,31 @@ const Home = (props) => {
         }
     }
 
+    function togglePage(page){
+        setContactVisible(false)
+        setContactInforVisible(false)
+        setAddContactVisible(false)
+        switch(page){
+            case "addContact":
+                setAddContactVisible(true)
+                break;
+
+            case "contacts":
+                setContactVisible(true)
+                break;
+
+            case "contactInfo":
+                setContactInforVisible(true)
+                break;
+        }
+                
+    }
 
 
+    function openContactInfo(person){
+        setContactInfo(person)
+        togglePage("contactInfo")
+    }
 
 
     if (isLoading) return <Loader />
@@ -116,6 +100,7 @@ const Home = (props) => {
     return (
         <div className='home'>
             
+            <br/>
             <AnimatePresence exitBeforeEnter>
                 {/* Add contact component */}
                 {addContactVisible &&
@@ -127,7 +112,7 @@ const Home = (props) => {
                         exit={{ opacity: 0, x: 200, transition: { duration: 0.5 } }}
                         transition={{ duration: 1 }}>
                         <a  className = "back-button"
-                            onClick={()=>setAddContactVisible(false)}>
+                            onClick={()=>togglePage("contacts")}>
                             <span className='back-arrow'>
                                 <ArrowBackIosIcon fontSize="inherit" />
                             </span>
@@ -136,38 +121,64 @@ const Home = (props) => {
                         <AddContact 
                             contactList={contactList}
                             setContactList={setContactList}
-                            setAddContactVisible={setAddContactVisible}
+                            togglePage={togglePage}
                             token={props.token} />
                     </motion.div>}
             
                 {/* Add contact component */}
-                {!addContactVisible &&
+                {contactVisible &&
                     <motion.div 
                         className='contacts' 
-                        key="conacts"
+                        key="contacts"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0, x: -200, transition: { duration: 0.5 } }}
                         transition={{ duration: 1 }}>
+                        <a  className = "back-button"
+                            onClick={()=>props.signOut()}>
+                            <span className='back-arrow'>
+                                <ArrowBackIosIcon fontSize="inherit" />
+                            </span>
+                            <p className='go-back-text'>sign out</p>
+                            </a>
                         <Mic transcript={transcript} toggleRecord={toggleRecord} isRecording={isRecording}/>
                         
                         <div className='contacts-header'>
                             <h1 className='heading_main contacts-header-h1'>My Contacts</h1>
                             <button 
                                 className='btn-primary add-contact-button'
-                                onClick={()=>setAddContactVisible(true)}>
+                                onClick={()=>togglePage("addContact")}>
                                 <span className='plus'>&#43;</span>
                                 <p>Add Contact</p>
                             </button>
                         </div>
                         <p className='contacts-header-text-sub'>There are {contactList.length} total contacts.</p>
-                        <Contacts
-                            contactList={contactList} />
+                        <Contacts 
+                            contactList={contactList} openContactInfo={openContactInfo} />
+                    </motion.div>}
+
+
+                 {/* Add contact component */}
+                 {contactInfoVisible &&
+                    <motion.div 
+                        className='contacts' 
+                        key="contactInfo"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, x: -200, transition: { duration: 0.5 } }}
+                        transition={{ duration: 1 }}>
+                        <a  className = "back-button"
+                            onClick={()=>togglePage("contacts")}>
+                            <span className='back-arrow'>
+                                <ArrowBackIosIcon fontSize="inherit" />
+                            </span>
+                            <p className='go-back-text'>Go back</p>
+                        </a>
+                        <ContactInfo contact={contactInfo}/>
                     </motion.div>}
             </AnimatePresence>
         </div>
     )
 }
-
 
 export default Home; 

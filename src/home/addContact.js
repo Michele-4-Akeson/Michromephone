@@ -5,8 +5,10 @@ import "../styles/contacts.css";
 
 const AddContact = (props) => {
     const [state, setState] = useState({
-        contact: "",
+        name: "",
         phoneNumber: "",
+        email:"",
+        discord:""
     })
 
     const [message, setMessage] = useState("")
@@ -20,14 +22,14 @@ const AddContact = (props) => {
 
       
         // Call API function to add contact to Monogo DB
-        const response = await BackendActions.addContactToProfile(props.token, state.contact, state.phoneNumber);
+        const response = await BackendActions.addContactToProfile(props.token, state);
 
         if (response != null && response.success){
-            alert(state.contact + " at " + state.phoneNumber + " successfully added!")
+            //alert(state.contact + " at " + state.phoneNumber + " successfully added!")
             // Add contact to contactList state in Home.js
-            props.setContactList([...props.contactList, {"contact": state.contact, "phoneNumber": state.phoneNumber}])
+            props.setContactList([...props.contactList, {"name": state.name, "phoneNumber": state.phoneNumber, "email":state.email, "discord":state.discord}])
             // Switch back to contacts interface
-            props.setAddContactVisible(false);
+            props.togglePage("contacts");
         } else {
             setMessage("unable to add contact")
         }
@@ -47,18 +49,29 @@ const AddContact = (props) => {
                 className='add-contact-form'>
                 <label className='form-label'>Contact Name</label>
                     <input 
-                        name="contact" 
+                        name="name" 
                         type="text" 
                         className="form-input"
-                        value={state.contact} 
+                        value={state.name} 
                         required />
                 <label className='form-label'>Contact Number</label>
                     <input 
                         name="phoneNumber" 
                         type="text" 
                         className="form-input"
-                        value={state.phoneNumber} 
-                        required />
+                        value={state.phoneNumber} />
+                <label className='form-label'>Contact Email</label>
+                    <input 
+                        name="email" 
+                        type="text" 
+                        className="form-input"
+                        value={state.email} />
+                 <label className='form-label'>Contact Discord</label>
+                    <input 
+                        name="discord" 
+                        type="text" 
+                        className="form-input"
+                        value={state.discord} />
                 <input type="submit" className="btn-primary save-contact" value="Save contact" />
             </form> 
         </div>

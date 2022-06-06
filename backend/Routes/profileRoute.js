@@ -3,7 +3,6 @@ const express = require("express");
 const router = express.Router();
 const Profile = require("../Models/profileModel")
 
-
 /*
 returns array of token associated with profile
 */
@@ -85,8 +84,7 @@ router.post("/contact", async function(req, res){
         console.log("POST/Profile/contact Called")
         const token = req.body.token;
         const contact = req.body.contact;
-        const phoneNumber = req.body.phoneNumber
-        const response = await Profile.updateOne({token:token}, {$push:{contacts:{contact:contact, phoneNumber:phoneNumber}}})
+        const response = await Profile.updateOne({token:token}, {$push:{contacts:{name:contact.name, phoneNumber:contact.phoneNumber, email:contact.email, discord:contact.discord}}})
         console.log(response)
 
         res.json({success:response.modifiedCount==1})

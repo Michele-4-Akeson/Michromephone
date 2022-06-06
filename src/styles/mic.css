@@ -30,7 +30,7 @@
 
 .pulse {
     background: #7c5dfa;
-    animation: pulse-animation 2s infinite;
+    animation: pulse-animation 1.5s infinite;
   }
   
   @keyframes pulse-animation {

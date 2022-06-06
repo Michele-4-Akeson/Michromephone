@@ -5,6 +5,7 @@ import Home from "./home/Home";
 import Auth from './auth/auth';
 import { useLocalStorage } from './CustomHooks/UseLocalStorage';
 import { motion, AnimatePresence } from "framer-motion"
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const App = () => {
     const [token, setToken] = useLocalStorage("token", null);
@@ -12,12 +13,18 @@ const App = () => {
     const [response, setResponse] = useState("")
 
     // If token is found, that means the user is logged in and we can re-direct to the home page
+
+    function signOut(){
+        localStorage.clear()
+        setToken(null);
+        
+    }
+
     return (
         <AnimatePresence exitBeforeEnter>
             {token?
-                <div>
-                    <Home token={token} />
-                </div>:
+                <Home token={token} signOut={signOut} /> :
+                
                 <motion.div
                     key='auth'
                     initial={ false }

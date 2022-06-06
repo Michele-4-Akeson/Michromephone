@@ -41,6 +41,18 @@
     display: flex;
 }
 
+.contacts-list-item:hover{
+    background-color: rgb(212, 211, 211);
+}
+
+.contacts-list-item:active{
+    background-color: #737791;
+}
+
+.contacts-list-item:active::after{
+    background-color: white;
+}
+
 .contacts-list-item:not(:last-child) {
     margin-bottom: 15px;
 }
@@ -69,4 +81,10 @@
 
 .add-contact-form {
     margin-top: 20px;
+}
+
+
+.contact-icon{
+    margin-right: 10px;
+    color:  #7c5dfa;
 }

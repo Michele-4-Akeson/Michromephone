@@ -2,8 +2,10 @@ const mongoose = require("mongoose");
 
 
 const contactSchema = new mongoose.Schema({
-    contact: String,
+    name: String,
     phoneNumber: String,
+    email: String,
+    discord: String
 })
 
 const profileSchema = new mongoose.Schema({

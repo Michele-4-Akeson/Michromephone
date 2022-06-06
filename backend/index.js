@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const bodyParser = require('body-parser');  
 const querystring = require('querystring');
 require("dotenv/config"); 
+const discordBot = require("./discordBot")
 
 const PORT = process.env.PORT || 3001;
 
@@ -46,7 +47,15 @@ EXPRESS ROUTERS
 
 const profileRoute = require("./Routes/profileRoute")
 const twilioRoute = require("./Routes/twilioRoute"); 
+const discordRoute = require("./Routes/discordRoute")
 
 
 app.use("/profile", profileRoute);
 app.use("/twilio", twilioRoute);
+app.use("/discord", discordRoute);
+
+
+
+
+
+

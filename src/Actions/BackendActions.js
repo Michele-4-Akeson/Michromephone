@@ -91,7 +91,7 @@ export async function getContacts(token){
 /*
 post request to add a contact to the contacts of a profile
 */
-export async function addContactToProfile(token, contact, phoneNumber){
+export async function addContactToProfile(token, contact){
     try {
         const response = await fetch(backendURL + profilePath + "/contact", {
             method:"POST",
@@ -99,7 +99,7 @@ export async function addContactToProfile(token, contact, phoneNumber){
             "Content-Type":"application/json",
             "Accept":"application/json"
             },
-            body: JSON.stringify({token:token, contact:contact, phoneNumber:phoneNumber})
+            body: JSON.stringify({token:token, contact:contact})
         
         });
         
@@ -171,6 +171,79 @@ export async function addVerifiedContact(contact, phoneNumber){
             "Accept":"application/json"
             },
             body: JSON.stringify({contact:contact, phoneNumber:phoneNumber})
+        
+        });
+        
+    return response.json();
+    
+    } catch (error){
+        console.log(error);
+    }
+
+}
+
+
+/*
+attempts to send a discord message to a user with the given username
+*/
+export async function sendDiscordMessage(username, message){
+    try {
+        console.log(username, message)
+        const response = await fetch(backendURL + "discord", {
+            method:"POST",
+            headers: {
+            "Content-Type":"application/json",
+            "Accept":"application/json"
+            },
+            body: JSON.stringify({username:username, message:message})
+        
+        });
+        
+    return response.json();
+    
+    } catch (error){
+        console.log(error);
+    }
+
+
+}
+
+
+/*
+sends an email to a target email to join the discord channel
+*/
+export async function sendDiscordInvite(targetEmail, senderName){
+    try {
+        const response = await fetch(backendURL + "discord" + "/invite", {
+            method:"POST",
+            headers: {
+            "Content-Type":"application/json",
+            "Accept":"application/json"
+            },
+            body: JSON.stringify({targetEmail:targetEmail, senderName:senderName})
+        
+        });
+        
+    return response.json();
+    
+    } catch (error){
+        console.log(error);
+    }
+
+}
+
+/*
+sends a email to targetEmail with text as the contents
+*/
+export async function sendEmail(targetEmail, text){
+    try {
+        const response = await fetch(backendURL + "discord" + "/email", {
+            method:"POST",
+            headers: {
+            "Content-Type":"application/json",
+            "Accept":"application/json"
+            },
+            body: JSON.stringify({targetEmail:targetEmail, text:text})
         
         });
         
