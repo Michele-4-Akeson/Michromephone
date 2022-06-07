@@ -5,7 +5,7 @@ import { faFacebook } from "@fortawesome/free-brands-svg-icons"
 import { faDiscord } from "@fortawesome/free-brands-svg-icons"
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faPhoneSquareAlt } from '@fortawesome/free-solid-svg-icons'
-import { sendChromeMessage, parseCommand, getLink } from '../Actions/ChromeActions';
+import { sendChromeMessage, parseCommand} from '../Actions/ChromeActions';
 import * as BackendActions from "../Actions/BackendActions";
 import { ContactInfo } from './ContactInfo';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -22,48 +22,60 @@ const Contacts = (props) => {
 
 
                         if (parsedCommand.command == "send"){
-                            getContactByName(parseCommand.to)
+                            const contact = getContactByName(parsedCommand.to)
 
-                            /*
-                            chrome.tabs && chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                                BackendActions.sendDiscordMessage("hippo_yekim#9461", tabs[0].url)
-                                BackendActions.sendEmail("akesonm@mcmaster.ca", "yekim", tabs[0].url)
-                            });
-                            */
-                            
-                            //BackendActions.sendDiscordMessage("hippo_yekim#9461", link)
-
-                            /*
-                            let contact = getContactByName(parseCommand.to)
+        
                             if (contact){
-                                switch (parseCommand.target.toLowerCase()){
+                                switch (parsedCommand.target.toLowerCase()){
                                     case "discord":
-                                        switch(parsedCommand.what){
-                                            case "link":
-                                                console.log("send discord message, to", contact)
-                                                BackendActions.sendDiscordMessage(contact.discord, getLink())
-                                                break;
-                                            case "clipboard":
-                                                const text = await navigator.clipboard.readText();
-                                                BackendActions.sendDiscordMessage(contact.discord, text);
-                                                break;
+                                        if (contact.discord != ""){
+                                            switch(parsedCommand.what){
+                                                case "link":
+                                                    chrome.tabs && chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                                                       BackendActions.sendDiscordMessage(contact.discord, tabs[0].url)  
+                                                    });
+                                                    break;
+                                                case "clipboard":
+                                                    chrome.storage.sync.get(['clipboard'], function(result) {
+                                                        console.log('Value currently is ', result.clipboard);
+                                                        BackendActions.sendDiscordMessage(contact.discord, result.clipboard);
+                                                      });
+                                                   
+                                                    
+                                                    break;
+                                            }
+
                                         }
-                                        
+                                       
                                         break;
                                     case "email":
-                                        case "link":
-                                            break;
-                                        case "clipboard":
-                                            break;
-                                    case "phone":
+                                        if (contact.email != ""){
+                                            switch(parsedCommand.what){
+                                                case "link":
+                                                    chrome.tabs && chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                                                       BackendActions.sendEmail(contact.email, tabs[0].url)  
+                                                    });
+                                                    break;
+                                                case "clipboard":
+                                                    chrome.storage.sync.get(['clipboard'], function(result) {
+                                                        console.log('Value currently is ', result.clipboard);
+                                                        BackendActions.sendEmail(contact.email, result.clipboard);
+                                                      });
+                                                    break;
+                                            }
+                                        }
                                         break;
+                                        
+                                    
                                 }
 
                             }
-                            */
+                            
+                            
                           
 
                         }
+
 
                         break;
                 }
@@ -75,11 +87,8 @@ const Contacts = (props) => {
 
 
     function getContactByName(name){
-        // props.contactList = []
-        console.log(props)
         for (let contact of props.contactList){
-            console.log(contact)
-            if (contact.contact.toLowerCase() == name.toLowerCase()){
+            if (contact.name.toLowerCase() == name.toLowerCase()){
                 console.log("contact found", contact)
                 return contact
             }

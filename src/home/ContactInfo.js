@@ -17,7 +17,7 @@ export const ContactInfo = ({contact}) => {
                 <FontAwesomeIcon className='user-icon' icon={faUser}/>
             </div>
           
-            <h2 className=''>{contact.name}</h2>
+            <h2>{contact.name}</h2>
         </div>
        
         

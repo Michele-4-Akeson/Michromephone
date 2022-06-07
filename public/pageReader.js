@@ -7,13 +7,14 @@ chrome.runtime.onMessage.addListener(
             case "copy":
                 perform("copy", message)
                 break
-            
             case "read":
                 perform("read", message)
                 break
-            
             case "stop":
                 stopeTextReading();
+                break;
+            case "say":
+                copy(message.content)
                 break;
     
 
@@ -145,6 +146,9 @@ function copy(text) {
         textarea.focus();
         textarea.select();
         document.execCommand('copy');
+        chrome.storage.sync.set({"clipboard": text}, function() {
+            console.log('Value is set to ' + text);
+        });
         textarea.remove();
     } catch (error) {
         console.log(error)

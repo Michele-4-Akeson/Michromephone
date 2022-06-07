@@ -29,7 +29,15 @@ const AddContact = (props) => {
             // Add contact to contactList state in Home.js
             props.setContactList([...props.contactList, {"name": state.name, "phoneNumber": state.phoneNumber, "email":state.email, "discord":state.discord}])
             // Switch back to contacts interface
+
+            if (state.email != "" && state.discord != ""){
+                const response = await BackendActions.sendDiscordInvite(state.email, " ")
+
+            }
+
             props.togglePage("contacts");
+
+
         } else {
             setMessage("unable to add contact")
         }
@@ -54,12 +62,13 @@ const AddContact = (props) => {
                         className="form-input"
                         value={state.name} 
                         required />
-                <label className='form-label'>Contact Number</label>
+                
+                {/*<label className='form-label'>Contact Number</label>
                     <input 
                         name="phoneNumber" 
                         type="text" 
                         className="form-input"
-                        value={state.phoneNumber} />
+                value={state.phoneNumber} />*/}
                 <label className='form-label'>Contact Email</label>
                     <input 
                         name="email" 

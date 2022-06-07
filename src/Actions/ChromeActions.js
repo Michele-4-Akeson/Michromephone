@@ -11,7 +11,7 @@ export function sendChromeMessage(message){
 
 
 
-const commandList = ["send", "copy", "read", "stop"]
+const commandList = ["send", "copy", "read", "stop", "say"]
 
 export function parseCommand(wordList){
   /*
@@ -59,6 +59,12 @@ export function parseCommand(wordList){
             toIndex = wordList.lastIndexOf("to")
             sendChromeMessage({text:"read", start:wordList[fromIndex + 1], end:wordList[toIndex + 1]})
             return {command:command, from:wordList[fromIndex + 1], to:wordList[toIndex + 1]}
+
+          case "say":
+            wordList[wordList.indexOf("say")] = ""
+            let content = wordList.join(" ")
+            sendChromeMessage({text:"say", content:content})
+
 
       }
 

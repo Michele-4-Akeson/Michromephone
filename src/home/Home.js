@@ -14,6 +14,9 @@ import '../styles/contactInfo.css';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { motion, AnimatePresence } from "framer-motion"
 import { ContactInfo } from './ContactInfo';
+import { CommandsPage } from './CommandsPage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophoneLines } from '@fortawesome/free-solid-svg-icons'
 
 
 
@@ -24,6 +27,7 @@ const Home = (props) => {
     const [addContactVisible, setAddContactVisible] = useState(false);
     const [contactVisible, setContactVisible] = useState(true);
     const [contactInfoVisible, setContactInforVisible] = useState(false)
+    const [commandsVisible, setCommandsVisible] = useState(false)
     const [contactInfo, setContactInfo] = useState(null);
     const [isRecording, setIsRecording] = useState(true);
     const [transcript, setTrascript] = useState("")
@@ -33,9 +37,8 @@ const Home = (props) => {
 
     useEffect(() => {
         setPort(chrome.runtime && chrome.runtime.connect({ name: "popup" }))
-        sendChromeMessage({text:"toggleRecord"})
         getContacts();
-
+        sendChromeMessage({text:"startRecording"})
         chrome.runtime && chrome.runtime.onMessage.addListener(
             function(message, sender, sendResponse) {
                 switch (message.text){
@@ -46,7 +49,7 @@ const Home = (props) => {
            
         });
 
-        setIsLoading(false);
+        
 
 
     }, []);
@@ -65,6 +68,7 @@ const Home = (props) => {
         const response = await BackendActions.getContacts(props.token)
         if (response != null){
             setContactList([...response.contacts])
+            setIsLoading(false);
         }
     }
 
@@ -72,6 +76,7 @@ const Home = (props) => {
         setContactVisible(false)
         setContactInforVisible(false)
         setAddContactVisible(false)
+        setCommandsVisible(false)
         switch(page){
             case "addContact":
                 setAddContactVisible(true)
@@ -84,6 +89,9 @@ const Home = (props) => {
             case "contactInfo":
                 setContactInforVisible(true)
                 break;
+            case "commands":
+                setCommandsVisible(true)
+                break
         }
                 
     }
@@ -155,10 +163,17 @@ const Home = (props) => {
                         <p className='contacts-header-text-sub'>There are {contactList.length} total contacts.</p>
                         <Contacts 
                             contactList={contactList} openContactInfo={openContactInfo} />
+                        <br/>
+                        <button 
+                                className='btn-primary add-contact-button'
+                                onClick={()=>togglePage("commands")}>
+                                <span><FontAwesomeIcon className='contact-icon white' icon={faMicrophoneLines}/></span>
+                                <p>Voice Commands</p>
+                        </button>
                     </motion.div>}
 
 
-                 {/* Add contact component */}
+                 {/* Add contactInfo component */}
                  {contactInfoVisible &&
                     <motion.div 
                         className='contacts' 
@@ -175,6 +190,25 @@ const Home = (props) => {
                             <p className='go-back-text'>Go back</p>
                         </a>
                         <ContactInfo contact={contactInfo}/>
+                    </motion.div>}
+
+                 {/* Add commandInfo component */}
+                 {commandsVisible &&
+                    <motion.div 
+                        className='contacts' 
+                        key="commands"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, x: -200, transition: { duration: 0.5 } }}
+                        transition={{ duration: 1 }}>
+                        <a  className = "back-button"
+                            onClick={()=>togglePage("contacts")}>
+                            <span className='back-arrow'>
+                                <ArrowBackIosIcon fontSize="inherit" />
+                            </span>
+                            <p className='go-back-text'>Go back</p>
+                        </a>
+                        <CommandsPage/>
                     </motion.div>}
             </AnimatePresence>
         </div>
