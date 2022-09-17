@@ -1,7 +1,5 @@
 # MICHROMEPHONE
 [chrome-link](https://chrome.google.com/webstore/detail/michromephone/ilcdkmgajobpoeemenhnncagcjemnaco)
-[demo]()
-
 
 ### About
 Michromephone is a little personal project that allows users to send discord messages and emails to friends from the chrome browser by using simple voice commands. We've also added additional voice commands to allow a user to:
@@ -9,3 +7,6 @@ Michromephone is a little personal project that allows users to send discord mes
 - read text out loud from a webpage
 - send a link of the current tab
 - stores spoken commands into a users clipboard which can sent in messages
+
+![](./capture.jpg)
+
