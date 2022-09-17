@@ -1,6 +1,6 @@
 import {nanoid} from 'nanoid'
 
-const backendURL = "http://localhost:3001/"
+const backendURL = "https://michromephone.herokuapp.com/"
 const twilioPath = "twilio"
 const profilePath = "profile"
 

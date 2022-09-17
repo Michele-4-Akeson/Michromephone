@@ -6,6 +6,7 @@ export const SendForm = ({value, icon, sender}) => {
     const [text, setText] = useState("")
 
 
+
     async function send(e){
         e.preventDefault()
         const response = await sender(value, text)

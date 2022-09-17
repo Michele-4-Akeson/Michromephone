@@ -1,7 +1,7 @@
 {
   "name": "Michromephone",
-  "description": "An chrome extention that helps users send messages to their friends from the browser with voice commands",
-  "version": "1.1",
+  "description": "A chrome extension that helps users send messages to their friends from the browser with voice commands",
+  "version": "1.2",
   "manifest_version": 3,
   "action": {
       "default_popup": "index.html",
@@ -9,8 +9,8 @@
   },
   "icons": {
       "16": "michromephone16.png",
-      "48": "michromephone48.png",
-      "128": "michromephone128.png"
+      "48": "michromephone16.png",
+      "128": "michromephone16.png"
   },
   "permissions": [
     "activeTab",

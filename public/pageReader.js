@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener(
                 perform("read", message)
                 break
             case "stop":
-                stopeTextReading();
+                stopTextReading();
                 break;
             case "say":
                 copy(message.content)
@@ -170,7 +170,7 @@ function startTextReading(text){
     console.log("startTextReading")
     
     if (speechSynthesis.speaking){
-        stopeTextReading()
+        stopTextReading()
     }
     
    try {
@@ -204,7 +204,7 @@ function pauseTextReading(){
 
 
 
-function stopeTextReading(){
+function stopTextReading(){
     speechSynthesis.resume()
     speechSynthesis.cancel();
 }
