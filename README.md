@@ -6,7 +6,7 @@ Michromephone is a little personal project that allows users to send discord mes
 - copy text from a webpage 
 - read text out loud from a webpage
 - send a link of the current tab
-- stores spoken commands into a users clipboard which can sent in messages
+- stores spoken commands into a users clipboard which can be sent in messages
 
 ![](./capture.jpg)
 
