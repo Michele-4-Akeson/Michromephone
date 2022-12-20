@@ -1,6 +1,6 @@
 import {nanoid} from 'nanoid'
 
-const backendURL = "https://michromephone-api.onrender.com/"
+const backendURL = "michromephone-production.up.railway.app/"
 const twilioPath = "twilio"
 const profilePath = "profile"
 
